@@ -1,0 +1,31 @@
+﻿inventory_id,flower_id,quantity,last_restock_date,supplier,inventory_city,add_price
+1,1,485,2024-01-15,Gül bağı Ağdaş,Bakı,0.10
+2,2,145,2024-01-20,Orkideya İxracatı,Gəncə,0.15
+3,3,285,2024-01-10,Holland Laləsi,Bakı,0.12
+4,4,965,2024-01-05,Yerli Qərənfil,Sumqayıt,0.08
+5,5,775,2024-01-12,Yerli Qərənfil,Bakı,0.09
+6,6,185,2024-01-18,Şəxsi Buket,Gəncə,0.20
+7,7,115,2024-01-22,Lilya Ferması,Bakı,0.18
+8,8,75,2024-01-25,Orkideya İxracatı,Mingəçevir,0.25
+9,9,235,2024-01-08,Holland Laləsi,Bakı,0.14
+10,10,55,2024-01-30,Eksklüziv Güllər,Gəncə,0.40
+11,11,575,2024-01-14,Yerli Qərənfil,Sumqayıt,0.10
+12,12,335,2024-01-19,Gül bağı Ağdaş,Bakı,0.16
+13,13,675,2024-01-03,Yerli Qərənfil,Gəncə,0.11
+14,14,165,2024-01-27,Holland Laləsi,Bakı,0.17
+15,15,35,2024-01-31,Nadir Orkideyalar,Mingəçevir,0.50
+16,16,85,2024-02-05,Eksklüziv Güllər,Bakı,0.35
+17,17,205,2024-02-08,Holland Laləsi,Gəncə,0.22
+18,18,65,2024-02-12,Lilya Ferması,Sumqayıt,0.28
+19,19,265,2024-02-15,Gül bağı Ağdaş,Bakı,0.19
+20,20,305,2024-02-18,Gül bağı Ağdaş,Gəncə,0.21
+21,21,20,2024-02-22,Nadir Orkideyalar,Mingəçevir,0.55
+22,22,90,2024-02-25,Lilya Ferması,Bakı,0.32
+23,23,140,2024-02-28,Holland Laləsi,Sumqayıt,0.24
+24,24,435,2024-03-02,Yerli Qərənfil,Gəncə,0.13
+25,25,105,2024-03-05,Eksklüziv Güllər,Bakı,0.37
+26,26,60,2024-03-08,Orkideya İxracatı,Mingəçevir,0.26
+27,27,50,2024-03-12,Lilya Ferması,Gəncə,0.42
+28,28,255,2024-03-15,Holland Laləsi,Bakı,0.23
+29,29,505,2024-03-18,Yerli Qərənfil,Sumqayıt,0.14
+30,30,115,2024-03-20,Şəxsi Buket,Gəncə,0.45

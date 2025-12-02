@@ -1,0 +1,31 @@
+﻿flower_id,flower_name,category,base_price,color,in_stock,min_stock,supplier
+1,Qırmızı Qızıl Gül,Gül,5.50,Qırmızı,500,50,Gül bağı Ağdaş
+2,Ağ Orkideya,Orkideya,12.00,Ağ,150,20,Orkideya İxracatı
+3,Sarı Lalə,Lalə,3.25,Sarı,300,30,Holland Laləsi
+4,Çəhrayı Qərənfil,Qərənfil,2.80,Çəhrayı,1000,100,Yerli Qərənfil
+5,Qırmızı Qərənfil,Qərənfil,2.90,Qırmızı,800,80,Yerli Qərənfil
+6,Qarışıq Çiçək Buketi,Digər,25.00,Rəngarəng,200,25,Şəxsi Buket
+7,Ağ Lilya,Lilya,8.50,Ağ,120,15,Lilya Ferması
+8,Bənövşəyi Orkideya,Orkideya,14.00,Bənövşəyi,80,10,Orkideya İxracatı
+9,Portağal Lalə,Lalə,4.00,Portağal,250,25,Holland Laləsi
+10,Qara Qızıl Gül,Gül,7.00,Qara,60,5,Eksklüziv Güllər
+11,Sarı Qərənfil,Qərənfil,3.00,Sarı,600,60,Yerli Qərənfil
+12,Çəhrayı Gül,Gül,6.00,Çəhrayı,350,35,Gül bağı Ağdaş
+13,Ağ Qərənfil,Qərənfil,3.20,Ağ,700,70,Yerli Qərənfil
+14,Qırmızı Lalə,Lalə,3.75,Qırmızı,180,18,Holland Laləsi
+15,Mavi Orkideya,Orkideya,16.00,Mavi,40,5,Nadir Orkideyalar
+16,Qızılı Gül,Gül,9.00,Qızılı,90,10,Eksklüziv Güllər
+17,Bənövşəyi Lalə,Lalə,4.50,Bənövşəyi,220,22,Holland Laləsi
+18,Qırmızı Lilya,Lilya,10.00,Qırmızı,70,7,Lilya Ferması
+19,Sarı Gül,Gül,5.80,Sarı,280,28,Gül bağı Ağdaş
+20,Ağ Qızıl Gül,Gül,6.50,Ağ,320,32,Gül bağı Ağdaş
+21,Qara Orkideya,Orkideya,18.00,Qara,25,3,Nadir Orkideyalar
+22,Çəhrayı Lilya,Lilya,9.50,Çəhrayı,95,10,Lilya Ferması
+23,Qızıl Lalə,Lalə,5.00,Qızıl,150,15,Holland Laləsi
+24,Mavi Qərənfil,Qərənfil,4.20,Mavi,450,45,Yerli Qərənfil
+25,Portağal Gül,Gül,7.50,Portağal,110,11,Eksklüziv Güllər
+26,Sarı Orkideya,Orkideya,13.50,Sarı,65,7,Orkideya İxracatı
+27,Qırmızı Qızıl Lilya,Lilya,11.00,Qırmızı,55,6,Lilya Ferması
+28,Ağ Lalə,Lalə,3.80,Ağ,270,27,Holland Laləsi
+29,Bənövşəyi Qərənfil,Qərənfil,3.50,Bənövşəyi,520,52,Yerli Qərənfil
+30,Romantik Buket,Digər,35.00,Qarışıq,120,12,Şəxsi Buket
