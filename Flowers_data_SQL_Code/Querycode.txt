@@ -1,0 +1,214 @@
+--1.1.Count of Active Customers Registered Since June 1, 2025
+SELECT count(*) AS aktif_müsteri_sayı
+FROM public.customer
+WHERE registration_date >= '2025-06-01'
+
+--1.2.Customer Order Summary Sorted by Total Spending (Highest to Lowest)
+SELECT c.customer_id, 
+    c.full_name,
+    c.city,
+    count(o.order_id) AS Sifaris_sayı,
+    Sum(o.totla_price) AS Toplam_xerc
+     FROM public.customer c 
+JOIN public.orders o 
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id,c.full_name,c.city
+ORDER BY Toplam_xerc DESC
+
+--1.3. Best-Selling Flowers by Quantity and Total Revenue
+SELECT ft.flower_id,
+    ft.flower_name,
+    ft.category,
+    sum (od.quantity) AS toplam_satıs,
+    sum(od.quantity * od.unit_price) AS toplap_deyer
+     FROM public.flowertypes ft
+JOIN public.orderdetails od
+ON ft.flower_id= od.flower_id
+GROUP BY ft.flower_id,ft.flower_name,ft.category
+ORDER BY toplam_satıs DESC
+
+--2.1. Stock Status Evaluation — Detecting Items Requiring Urgent Reorder
+SELECT flower_id,
+    flower_name,
+    category,
+    in_stock,
+    min_stock,
+    CASE
+        WHEN avg(DISTINCT(in_stock))/2> min_stock THEN 'Tecili Sifariş'
+               ELSE 'Normal'
+        END AS stokdakı_malların_durumu
+FROM public.flowertypes 
+GROUP BY flower_id, flower_name
+ORDER BY in_stock DESC
+ 
+ --2.2. Updated Inventory Cost After Price Increase (Highest to Lowest)
+ SELECT i.inventory_id,
+    ft.flower_name,
+    ft.category,
+    i.quantity,
+    i.add_price AS deyerdeki_artım_faizi,
+    (i.quantity* i.add_price)+(i.quantity+ ft.base_price ) AS artımdan_sonrakı_toplam_maliyyet    
+ FROM public.inventory i 
+ JOIN public.flowertypes ft 
+ ON i.flower_id= ft.flower_id
+ ORDER BY artımdan_sonrakı_toplam_maliyyet DESC
+ 
+ --2.3. City-Based Inventory Cost Analysis After Price Increase (Sorted by Total Cost)
+ SELECT 
+ i.inventory_city,
+ count(DISTINCT(i.flower_id)) AS çeşidlilik,
+ sum (i.quantity) AS toplam_stok,
+ (i.quantity* i.add_price)+(i.quantity+ ft.base_price ) AS artımdan_sonrakı_toplam_maliyyet 
+ FROM public.inventory i 
+ JOIN public.flowertypes ft
+ ON ft.flower_id= i.flower_id
+ GROUP BY i.inventory_city,i.quantity,i.add_price, ft.base_price
+ ORDER BY artımdan_sonrakı_toplam_maliyyet  DESC
+ 
+ --3.1. Active Promotions with Categories — Sorted by Highest Discount Percentage
+ SELECT 
+    p.promotion_id,
+    p.promotion_name,
+    p.discount_percent * 100 AS indirim_yuzdesi,
+    p.start_date,
+    p.end_date,
+    p.min_order_amount,
+    STRING_AGG(c.category_name, ', ') AS kategoriler
+FROM public.promotions p
+JOIN public.promotion_categories pc
+    ON p.promotion_id = pc.promotion_id
+JOIN public.categories c 
+    ON c.category_id = pc.category_id
+WHERE CURRENT_TIMESTAMP BETWEEN p.start_date AND p.end_date
+GROUP BY  
+    p.promotion_id, 
+    p.promotion_name,
+    p.discount_percent,
+    p.start_date,
+    p.end_date,
+    p.min_order_amount
+ORDER BY 
+    p.discount_percent DESC;
+  
+--3.2. Promotion Performance — Usage Count, Unique Customers, and Discounted Sales
+SELECT 
+    p.promotion_id,
+    p.promotion_name,
+    count( od.detail_id) AS istifade_sayı,
+    count(DISTINCT( o.customer_id)) AS unique_müsteri,
+    sum( od.quantity* od.unit_price* od.discount_percent ) AS toplam_satıs
+FROM public.promotions p
+LEFT JOIN public.orderdetails od 
+ON p.discount_percent= od.discount_percent
+LEFT JOIN public.orders o 
+ON od.order_id= o.order_id
+GROUP BY p.promotion_id, p.promotion_name
+ORDER BY istifade_sayı DESC
+
+--3.3
+SELECT 
+    c.Category_name AS kategori,
+    COUNT(DISTINCT p.promotion_id) AS promosyon_sayisi,
+    AVG(p.discount_percent * 100) AS ortalama_indirim,
+    STRING_AGG(p.promotion_name, '; ') AS promosyonlar
+FROM Categories c
+LEFT JOIN Promotion_Categories pc ON c.Category_id = pc.category_id
+LEFT JOIN Promotions p ON pc.promotion_id = p.promotion_id
+WHERE CURRENT_DATE BETWEEN p.start_date AND p.end_date
+GROUP BY c.Category_name
+ORDER BY promosyon_sayisi DESC;
+
+---4.1.Customer Segmentation
+SELECT 
+    CASE 
+        WHEN age < 25 THEN '18-24'
+        WHEN age BETWEEN 25 AND 34 THEN '25-34'
+        WHEN age BETWEEN 35 AND 44 THEN '35-44'
+        WHEN age BETWEEN 45 AND 54 THEN '45-54'
+        ELSE '55+'
+    END AS yas_grubu,
+    gender AS cinsiyet,
+    COUNT(DISTINCT c.customer_id) AS musteri_sayisi,
+    AVG(o.totla_price) AS ortalama_siparis,
+    MAX(o.totla_price) AS en_yuksek_siparis
+FROM Customer c
+LEFT JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NOT NULL
+GROUP BY 
+    CASE WHEN age < 25 THEN '18-24'
+        WHEN age BETWEEN 25 AND 34 THEN '25-34'
+        WHEN age BETWEEN 35 AND 44 THEN '35-44'
+        WHEN age BETWEEN 45 AND 54 THEN '45-54'
+        ELSE '55+'
+    END,
+    gender
+ORDER BY yas_grubu, cinsiyet;
+
+--4.2. Product-Based Profit 
+
+SELECT 
+    f.flower_id,
+    f.flower_name,
+    f.category,
+    SUM(od.quantity) AS toplam_satis,
+    AVG(od.unit_price) AS ortalama_satis_fiyati,
+    AVG(i.add_price) AS ortalama_maliyet,
+    SUM(od.quantity * od.unit_price) AS toplam_ciro,
+    SUM(od.quantity * i.add_price) AS toplam_maliyet,
+    SUM(od.quantity * (od.unit_price - i.add_price)) AS toplam_kar
+FROM FlowerTypes f
+JOIN OrderDetails od ON f.flower_id = od.flower_id
+JOIN Inventory i ON f.flower_id = i.flower_id
+JOIN Orders o ON od.order_id = o.order_id
+WHERE o.order_status = 'Çatdırıldı'
+GROUP BY f.flower_id, f.flower_name, f.category
+HAVING SUM(od.quantity) > 0
+ORDER BY toplam_kar DESC;
+
+--4.3. City-Based Delivery Analysis
+
+SELECT 
+    o.delivery_city,
+    COUNT(o.order_id) AS siparis_sayisi,
+    AVG(o.order_date-o.delivery_date) AS ortalama_teslimat_suresi,
+    SUM(o.totla_price) AS toplam_ciro,
+    AVG(o.totla_price) AS ortalama_siparis_tutari
+FROM Orders o
+WHERE o.order_status = 'Çatdırıldı'
+GROUP BY o.delivery_city
+ORDER BY siparis_sayisi DESC;
+
+--5.1. Product Category – Profit & Revenue Breakdown (Delivered Orders Only)
+SELECT 
+    f.category,
+    COUNT(DISTINCT o.order_id) AS siparis_sayisi,
+    SUM(od.quantity) AS toplam_adet,
+    SUM(od.quantity * od.unit_price) AS brut_ciro,
+    SUM(od.quantity * od.unit_price * od.discount_percent) AS toplam_indirim,
+    SUM(od.quantity * od.unit_price * (1 - od.discount_percent)) AS net_ciro
+FROM FlowerTypes f
+JOIN OrderDetails od ON f.flower_id = od.flower_id
+JOIN Orders o ON od.order_id = o.order_id
+WHERE o.order_status = 'Çatdırıldı'
+GROUP BY f.category
+ORDER BY net_ciro DESC;
+
+--5.2. Product-Level Profitability & Revenue Analysis (Delivered Orders Only)
+SELECT 
+    f.flower_id,
+    f.flower_name,
+    f.category,
+    SUM(od.quantity) AS toplam_satis,
+    AVG(od.unit_price) AS ortalama_satis_fiyati,
+    AVG(i.add_price) AS ortalama_maliyet,
+    SUM(od.quantity * od.unit_price) AS toplam_ciro,
+    SUM(od.quantity * i.add_price) AS toplam_maliyet,
+    SUM(od.quantity * (od.unit_price - i.add_price)) AS toplam_kar
+FROM FlowerTypes f
+JOIN OrderDetails od ON f.flower_id = od.flower_id
+JOIN Inventory i ON f.flower_id = i.flower_id
+JOIN Orders o ON od.order_id = o.order_id
+WHERE o.order_status = 'Çatdırıldı'
+GROUP BY f.flower_id, f.flower_name, f.category
+HAVING SUM(od.quantity) > 0
+ORDER BY toplam_kar DESC;

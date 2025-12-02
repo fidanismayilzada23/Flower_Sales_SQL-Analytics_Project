@@ -1,0 +1,92 @@
+--------------Customer Table------------
+
+CREATE TABLE Customer(
+customer_id INT PRIMARY KEY, 
+full_name VARCHAR (100) NOT NULL,
+gender VARCHAR(10),
+age INT,
+city VARCHAR(50),
+registration_date date);
+
+------------------Flower Type Table----------------------
+
+CREATE TABLE FlowerTypes(
+flower_id INT PRIMARY KEY,
+flower_name  VARCHAR (50) NOT NULL UNIQUE,
+category VARCHAR (50),
+base_price DECIMAL (10,2),
+color VARCHAR (30),
+in_stock INT,
+min_stock INT,
+supplier VARCHAR (50)
+);
+
+
+-------------Orders Table----------
+
+CREATE TABLE Orders(
+order_id INT PRIMARY KEY,
+customer_id INT NOT NULL REFERENCES Customer(
+customer_id),
+order_date DATE,
+delivery_date   DATE,
+delivery_city VARCHAR (50),
+order_status VARCHAR(20),
+totla_price DECIMAL (10,2),
+order_type VARCHAR(6)
+);
+
+------------Order Detailes-------------
+
+CREATE TABLE OrderDetails (
+detail_id INT PRIMARY KEY,
+order_id INT NOT NULL REFERENCES Orders(order_id),
+flower_id INT NOT NULL REFERENCES FlowerTypes(
+flower_id),
+quantity INT,
+unit_price DECIMAL (10,2),
+discount_percent DECIMAL (10,2),
+gift_wrapping VARCHAR (5)
+);
+DROP TABLE IF EXISTS OrderDetails;  --- yeniden düzenlemek üçün bu table silip yeniden yaradıldı
+
+---------------Invenoty Table----------------------
+
+CREATE TABLE Inventory (
+inventory_id INT PRIMARY KEY,
+flower_id INT NOT NULL REFERENCES FlowerTypes(
+flower_id),
+quantity INT NOT NULL,
+last_restock_date Date,
+supplier VARCHAR(100), 
+inventory_city VARCHAR (50),
+add_price DECIMAL (10,2) 
+);
+
+---------------Promotions Table-----------------------------
+
+CREATE TABLE Promotions (
+promotion_id INT PRIMARY KEY,
+promotion_name VARCHAR (100),
+discount_percent DECIMAL (10,2),
+start_date Date,
+end_date DATE,
+min_order_amount INT
+)
+
+----------Categories -----------------------
+
+CREATE TABLE Categories (
+Category_id INT PRIMARY KEY,
+Category_name VARCHAR(50) NOT NULL UNIQUE
+)
+
+----------------Promotions and Categories ilişkisi-------------------
+
+CREATE TABLE Promotion_Categories ( 
+promotion_id INT NOT NULL,
+category_id INT NOT NULL,
+PRIMARY KEY (promotion_id, category_id),
+FOREIGN KEY (promotion_id) REFERENCES Promotions (promotion_id),
+FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+)
